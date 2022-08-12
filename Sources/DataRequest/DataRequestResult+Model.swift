@@ -13,7 +13,7 @@ public extension DataRequestResult {
     ///
     /// - Parameters:
     ///   - decoder: `JSONDecoder`
-    func model<T: Codable>(decoder: JSONDecoder) throws -> T {
+    func model<T: Decodable>(decoder: JSONDecoder) throws -> T {
         return try get().data.decode(with: decoder)
     }
 
@@ -21,7 +21,7 @@ public extension DataRequestResult {
     ///
     /// - Parameters:
     ///   - decoder: `JSONDecoder`
-    func modelResult<T: Codable>(decoder: JSONDecoder) -> Result<T, Error> {
+    func modelResult<T: Decodable>(decoder: JSONDecoder) -> Result<T, Error> {
         return .init(catching: { try model(decoder: decoder) })
     }
 }

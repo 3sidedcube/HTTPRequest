@@ -11,12 +11,12 @@ import HTTPRequest
 extension DataRequestResult {
 
     /// Decode success into `T` or throw
-    func model<T: Codable>() throws -> T {
+    func model<T: Decodable>() throws -> T {
         return try model(decoder: .snakeCase)
     }
 
     /// Map into model result of success type `T`
-    func modelResult<T: Codable>() -> Result<T, Error> {
+    func modelResult<T: Decodable>() -> Result<T, Error> {
         return modelResult(decoder: .snakeCase)
     }
 }
