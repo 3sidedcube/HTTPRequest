@@ -61,7 +61,15 @@ public struct HTTPRequest {
 extension HTTPRequest: URLRequestConvertible {
 
     /// Map `HTTPRequest` to `URLRequest`
+    /// - Returns: `URLRequest`
     public func asURLRequest() throws -> URLRequest {
+        try asURLRequest(encodeQueryString: true)
+    }
+
+    /// Map `HTTPRequest` to `URLRequest`
+    /// - Parameter encodeQueryString: Encode query string
+    /// - Returns: `URLRequest`
+    public func asURLRequest(encodeQueryString: Bool) throws -> URLRequest {
         // urlComponents
         var urlComponents = self.urlComponents
 
@@ -92,7 +100,7 @@ extension HTTPRequest: URLRequestConvertible {
         urlRequest.httpBody = body
 
         // Encode parameters i.e. the `queryItems`
-        if !queryItems.isEmpty {
+        if encodeQueryString, !queryItems.isEmpty {
             urlRequest = try URLEncoding.queryString.encode(
                 urlRequest,
                 with: queryItems.parameters()

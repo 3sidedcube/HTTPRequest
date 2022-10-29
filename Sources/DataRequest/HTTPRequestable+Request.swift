@@ -46,9 +46,9 @@ public extension HTTPRequestable {
     /// Execute `request(queue:completion:)` synchronously
     /// - Returns: `DataRequestResult`
     func requestSync() throws -> DataRequestResult {
-        DispatchGroup.wait { block in
-            _ = request(queue: DispatchQueue.new) { newResult in
-                block(newResult)
+        DispatchGroup.wait { callback in
+            request(queue: DispatchQueue.new) { result in
+                callback(result)
             }
         }
     }

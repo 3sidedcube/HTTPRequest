@@ -15,6 +15,7 @@ public extension URLRequest {
     /// - Parameters:
     ///   - queue: `DispatchQueue`
     ///   - completion: Data response completion handler
+    @discardableResult
     func request(
         queue: DispatchQueue = .main,
         completion: @escaping (DataResponse) -> Void
@@ -25,9 +26,9 @@ public extension URLRequest {
     /// Execute `request(queue:completion:)` synchronously
     /// - Returns: `DataResponse`
     func requestSync() -> DataResponse {
-        DispatchGroup.wait { block in
-            _ = request(queue: DispatchQueue.new) { newResult in
-                block(newResult)
+        DispatchGroup.wait { callback in
+            request(queue: DispatchQueue.new) { response in
+                callback(response)
             }
         }
     }
