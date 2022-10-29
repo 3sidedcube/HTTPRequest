@@ -63,7 +63,7 @@ extension HTTPRequest: URLRequestConvertible {
     /// Map `HTTPRequest` to `URLRequest`
     /// - Returns: `URLRequest`
     public func asURLRequest() throws -> URLRequest {
-        try asURLRequest(encodeQueryString: true)
+        try asURLRequest(encodeQueryString: false)
     }
 
     /// Map `HTTPRequest` to `URLRequest`
