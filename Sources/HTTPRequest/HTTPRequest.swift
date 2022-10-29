@@ -82,7 +82,9 @@ extension HTTPRequest: URLRequestConvertible {
         // Remove `queryItems` from the `urlComponents` and add to the
         // `urlRequest` with encoding
         let queryItems = urlComponents.queryItems ?? []
-        urlComponents.queryItems = nil
+        if !encodeQueryString {
+            urlComponents.queryItems = nil
+        }
 
         // Throw on malformed URL
         let url = try urlComponents.asURL()
