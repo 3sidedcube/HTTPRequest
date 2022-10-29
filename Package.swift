@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "HTTPRequest",
     platforms: [
-        .macOS(.v10_12),
+        .macOS(.v11),
         .iOS(.v12)
     ],
     products: [
