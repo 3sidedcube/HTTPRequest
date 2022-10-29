@@ -27,16 +27,10 @@ public extension HTTPRequestable {
             // Try construct a URLRequest
             let urlRequest = try httpRequest().asURLRequest()
 
-            // Create the (data) request
-            let request = AF.request(urlRequest)
-
-            // Execute the request and complete with the response
-            request.execute(queue: queue) { response in
+            // Execute the (data) request completing with the response
+            return urlRequest.request(queue: queue) { response in
                 completion(DataRequestResult(response: response))
             }
-
-            // Return request that was made
-            return request
         } catch {
             // Construction of URLRequest threw an error.
             // Push completion to back of queue
@@ -52,24 +46,10 @@ public extension HTTPRequestable {
     /// Execute `request(queue:completion:)` synchronously
     /// - Returns: `DataRequestResult`
     func requestSync() throws -> DataRequestResult {
-        // Result from the request
-        var result: DataRequestResult!
-
-        // Enter a group to wait on
-        let group = DispatchGroup()
-        group.enter()
-
-        // Execute request asynchronously
-        request(queue: DispatchQueue(label: UUID().uuidString)) { newResult in
-            // Set request result
-            result = newResult
-
-            // Leave group
-            group.leave()
+        DispatchGroup.wait { block in
+            _ = request(queue: DispatchQueue.new) { newResult in
+                block(newResult)
+            }
         }
-
-        // Wait for group to finish and complete with result
-        group.wait()
-        return result
     }
 }
