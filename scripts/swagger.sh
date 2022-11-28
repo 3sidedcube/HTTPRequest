@@ -1,31 +1,52 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 #
-# swagger.sh
-# Use Swagger Codegen to generate Swift models from a Swagger spec.
+# Script: swagger.sh
+# Usage: ./swagger.sh <remote-url> <local-url>
+#
+# Use swagger-codegen to generate Swift API code.
+# https://github.com/swagger-api/swagger-codegen
 #
 
-# Repository name of the Swagger Codegen project
-SWAGGER_CODEGEN_REPO_NAME="Swagger Codegen"
+# Set defaults
+set -o nounset -o errexit -o errtrace -o pipefail
 
-# Repository URL of the Swagger Codegen project
-SWAGGER_CODEGEN_REPO_URL="https://github.com/swagger-api/swagger-codegen"
+# ============================== Variables ==============================
 
-# Command of Swagger Codegen
+# Red color
+RED='\033[0;31m'
+
+# No color
+NC='\033[0m'
+
+# Command of swagger-codegen
 SWAGGER_CODEGEN_COMMAND="swagger-codegen"
 
-# Check Swagger Codegen is installed
+# ============================== Functions ==============================
+
+# Print with red
+function printRed {
+    printf "${RED}$@${NC}\n"
+}
+
+# Print error message and exit with failure
+function fatalError {
+    printRed "$1" 1>&2
+    exit 1
+}
+
+# ============================== Main ==============================
+
+# Check swagger-codegen is installed
 if ! [ -x "$(command -v ${SWAGGER_CODEGEN_COMMAND})" ]; then
-    # Require Swagger Codegen installation
-    echo "Please install ${SWAGGER_CODEGEN_REPO_NAME} from: ${SWAGGER_CODEGEN_REPO_URL}"
-    exit 1
+    fatalError "Please install ${SWAGGER_CODEGEN_COMMAND}"
 fi
 
-# Check a Swagger spec url is provided as argument
-if [[ $# -eq 0 ]]; then
-    echo "Usage: $0 <SwaggerSpecURL>"
-    exit 1
+# Check a remote spec url and local url are provided as argument
+if [ "$#" -ne 2 ]; then
+    fatalError "Usage: $0 <remote-url> <local-url>"
 fi
 
-# Execute Swagger Codegen
-mkdir -p "${SWAGGER_CODEGEN_REPO_NAME}"
-${SWAGGER_CODEGEN_COMMAND} generate -i $1 -l swift5 -o "${SWAGGER_CODEGEN_REPO_NAME}"
+# Execute swagger-codegen
+${SWAGGER_CODEGEN_COMMAND} generate -i $1 -l swift5 -o $2
+
