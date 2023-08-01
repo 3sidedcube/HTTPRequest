@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "HTTPRequest",
     platforms: [
-        .macOS(.v11),
-        .iOS(.v13)
+        .macOS(.v12),
+        .iOS(.v15)
     ],
     products: [
         .library(
@@ -22,7 +22,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/Alamofire/Alamofire.git",
-            .upToNextMajor(from: "5.6.0")
+            .upToNextMajor(from: "5.7.0")
         )
     ],
     targets: [
