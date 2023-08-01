@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "HTTPRequest",
     platforms: [
-        .macOS(.v10_12),
+        .macOS(.v11),
         .iOS(.v13)
     ],
     products: [
@@ -22,7 +22,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/Alamofire/Alamofire.git",
-            .upToNextMajor(from: "5.5.0")
+            .upToNextMajor(from: "5.6.0")
         )
     ],
     targets: [
